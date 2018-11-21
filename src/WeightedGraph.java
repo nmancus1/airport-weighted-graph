@@ -135,6 +135,7 @@ public class WeightedGraph {
         if (source.compareTo(destination) > 0) {
             visited.add(destination);
             System.out.println(visited);
+            System.out.println(hours);
         }
 
         visited.add(source);
@@ -146,12 +147,14 @@ public class WeightedGraph {
             if (edge.getPointA().compareTo(source) > 0) {
                 int i = vertices.indexOf(edge.getPointB());
 
-
                 if (!searched[i]) {
+
+                    hours += edge.getWeight();
+
 
                     searched[vertices.indexOf(edge.getPointB())] = true;
 
-                    recursiveDFS(visited, edge.getPointB(), destination, searched, hours += edge.getWeight());
+                    recursiveDFS(visited, edge.getPointB(), destination, searched, hours);
 
                 }
 
@@ -159,6 +162,28 @@ public class WeightedGraph {
         }
 
         return hours;
+    }
+
+    public LinkedList<Vertex> interativeDFS(Vertex source, Vertex destination) {
+        Stack<Vertex> stack = new Stack();
+        LinkedList visited = new LinkedList();
+
+        stack.push(source);
+
+        while(!stack.empty()) {
+            Vertex current = stack.pop();
+            visited.add(current);
+
+            for(Edge edge: edges) {
+                if(edge.getPointA().compareTo(current) > 0) {
+                    if(edge.getPointB().compareTo(destination) > 0) {
+                        return visited;
+                    }
+                    stack.push(current);
+                }
+            }
+        }
+        return null;
     }
 
 }

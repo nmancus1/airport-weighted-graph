@@ -60,8 +60,12 @@ public class BSFTest {
         LinkedList ll = new LinkedList();
         //LinkedList DFS = graph.recursiveDFS(ll,sfo,atl);
 
-        int hours = graph.recursiveDFS(ll,lax,ord);
+        int hours = graph.recursiveDFS(ll,lax,sfo);
         System.out.println("Hours: " + hours);
+        graph.interativeDFS(lax,sfo);
+
+        LinkedList ll2 = graph.interativeDFS(lax,sfo);
+        System.out.println(ll2);
 
         //System.out.println(DFS);
         //System.out.println(ll);
