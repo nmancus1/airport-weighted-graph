@@ -51,25 +51,35 @@ public class HW_7 {
         map.put("SFO", sfo);
         map.put("BRW", brw);
 
-        System.out.println("Shortest Path: ");
 
         LinkedList<Vertex> path1 = new LinkedList<>();
 
-        int shortestPath = getShortestPath(jfk, brw, path1);
+        Vertex source = jfk;
+        Vertex destination = brw;
+
+        System.out.println("Shortest Path between " + source + " and " + destination +":");
+
+
+        int shortestPath = getShortestPath(source, destination, path1);
 
         //TODO: Add logic to catch an airport that doesn't connect
 
-        while(!path1.isEmpty()) {
-            System.out.println(path1.pop());
+        if(shortestPath < 1) {
+            System.out.println("There is no path between " + source + " and " + destination  + ".");
+            System.out.println();
+        } else {
+            while (!path1.isEmpty()) {
+                System.out.println(path1.pop());
+            }
+            System.out.println(shortestPath);
+            System.out.println();
         }
-        System.out.println(shortestPath);
-        System.out.println();
 
 
         System.out.println("Fastest Path: ");
         LinkedList<Vertex> path2 = new LinkedList<>();
 
-        int fastestPath = getFastestPath(jfk, brw, path2);
+        int fastestPath = getFastestPath(source, destination, path2);
 
         //TODO: Add logic to catch an airport that doesn't connect
 
