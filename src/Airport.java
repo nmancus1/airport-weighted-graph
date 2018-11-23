@@ -4,7 +4,7 @@
 public class Airport {
 
     String name;
-    private static final int waitTime = 2;
+    private int layOver = 2;
 
 
     public Airport() {
@@ -23,8 +23,8 @@ public class Airport {
         this.name = name;
     }
 
-    public static int getWaitTime() {
-        return waitTime;
+    public int getLayover() {
+        return layOver;
     }
 
     @Override

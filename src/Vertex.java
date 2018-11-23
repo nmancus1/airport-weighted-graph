@@ -7,12 +7,12 @@ import java.util.NoSuchElementException;
  * @author Frank M. Carrano
  * @version 2.0
  */
-class Vertex<T> implements VertexInterface<T>, java.io.Serializable
+class Vertex<T> implements java.io.Serializable
 {
     private T label;
-    private LinkedList<Edge> edgeList; // edges to neighbors
+    private LinkedList<Edge> edgeList;                 // edges to neighbors
     private boolean visited;                          // true if visited
-    private VertexInterface<T> previousVertex;        // on path to this vertex
+    private Vertex<T> previousVertex;        // on path to this vertex
     private double cost;                              // of path to this vertex
 
 
@@ -30,19 +30,19 @@ class Vertex<T> implements VertexInterface<T>, java.io.Serializable
         return label;
     } // end getLabel
 
-    public boolean connect(VertexInterface<T> endVertex,
+    public boolean connect(Vertex<T> endVertex,
                            double edgeWeight)
     {
         boolean result = false;
 
         if (!this.equals(endVertex))
         { // vertices are distinct
-            Iterator<VertexInterface<T>> neighbors = this.getNeighborIterator();
+            Iterator<Vertex<T>> neighbors = this.getNeighborIterator();
             boolean duplicateEdge = false;
 
             while (!duplicateEdge && neighbors.hasNext())
             {
-                VertexInterface<T> nextNeighbor = neighbors.next();
+                Vertex<T> nextNeighbor = neighbors.next();
                 if (endVertex.equals(nextNeighbor))
                     duplicateEdge = true;
             } // end while
@@ -57,12 +57,12 @@ class Vertex<T> implements VertexInterface<T>, java.io.Serializable
         return result;
     } // end connect
 
-    public boolean connect(VertexInterface<T> endVertex)
+    public boolean connect(Vertex<T> endVertex)
     {
         return connect(endVertex, 0);
     } // end connect
 
-    public Iterator<VertexInterface<T>> getNeighborIterator()
+    public Iterator<Vertex<T>> getNeighborIterator()
     {
         return new neighborIterator();
     } // end getNeighborIterator
@@ -77,14 +77,14 @@ class Vertex<T> implements VertexInterface<T>, java.io.Serializable
         return !edgeList.isEmpty();
     } // end hasNeighbor
 
-    public VertexInterface<T> getUnvisitedNeighbor()
+    public Vertex<T> getUnvisitedNeighbor()
     {
-        VertexInterface<T> result = null;
+        Vertex<T> result = null;
 
-        Iterator<VertexInterface<T>> neighbors = getNeighborIterator();
+        Iterator<Vertex<T>> neighbors = getNeighborIterator();
         while (neighbors.hasNext() && (result == null) )
         {
-            VertexInterface<T> nextNeighbor = neighbors.next();
+            Vertex<T> nextNeighbor = neighbors.next();
             if (!nextNeighbor.isVisited())
                 result = nextNeighbor;
         } // end while
@@ -97,12 +97,12 @@ class Vertex<T> implements VertexInterface<T>, java.io.Serializable
         return previousVertex != null;
     } // end hasPredecessor
 
-    public void setPredecessor(VertexInterface<T> predecessor)
+    public void setPredecessor(Vertex<T> predecessor)
     {
         previousVertex = predecessor;
     } // end setPredecessor
 
-    public VertexInterface<T> getPredecessor()
+    public Vertex<T> getPredecessor()
     {
         return previousVertex;
     } // end getPredecessor
@@ -155,7 +155,7 @@ class Vertex<T> implements VertexInterface<T>, java.io.Serializable
     public void display() // for testing
     {
         System.out.print(label + " " );
-        Iterator<VertexInterface<T>> vertexIterator = getNeighborIterator();
+        Iterator<Vertex<T>> vertexIterator = getNeighborIterator();
         Iterator<Double> weightIterator = getWeightIterator();
 
         while (vertexIterator.hasNext())
@@ -168,18 +168,18 @@ class Vertex<T> implements VertexInterface<T>, java.io.Serializable
     } // end display
 
     // 31.10
-    public class Edge implements java.io.Serializable
+    public class Edge
     {
-        private VertexInterface<T> vertex; // end vertex
+        private Vertex<T> vertex; // end vertex
         private double weight;
 
-        protected Edge(VertexInterface<T> endVertex, double edgeWeight)
+        protected Edge(Vertex<T> endVertex, double edgeWeight)
         {
             vertex = endVertex;
             weight = edgeWeight;
         } // end constructor
 
-        protected VertexInterface<T> getEndVertex()
+        protected Vertex<T> getEndVertex()
         {
             return vertex;
         } // end getEndVertex
@@ -195,7 +195,7 @@ class Vertex<T> implements VertexInterface<T>, java.io.Serializable
         } // end toString
     } // end Edge
 
-    private class neighborIterator implements Iterator<VertexInterface<T>>
+    private class neighborIterator implements Iterator<Vertex<T>>
     {
         private Iterator<Edge> edges;
 
@@ -209,9 +209,9 @@ class Vertex<T> implements VertexInterface<T>, java.io.Serializable
             return edges.hasNext();
         } // end hasNext
 
-        public VertexInterface<T> next()
+        public Vertex<T> next()
         {
-            VertexInterface<T> nextNeighbor = null;
+            Vertex<T> nextNeighbor = null;
 
             if (edges.hasNext())
             {
