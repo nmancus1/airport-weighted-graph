@@ -1,5 +1,8 @@
 /**
  * This class wraps the vertex class so that it can be sorted by a priority queue, using compareTo
+ *
+ * @author Nick Mancuso
+ * @since 11/22/18
  */
 
 public class VertexPriorityWrapper implements Comparable {
@@ -9,13 +12,12 @@ public class VertexPriorityWrapper implements Comparable {
     double cost;
     Vertex previous;
 
-    //constructor
+    //Constructor
     public VertexPriorityWrapper(Vertex vertex, double cost, Vertex previous) {
         this.vertex = vertex;
         this.cost = cost;
         this.previous = previous;
     }
-
 
     //Accessors and Mutators
     public double getCost() {

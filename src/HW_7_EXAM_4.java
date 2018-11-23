@@ -1,6 +1,11 @@
+/**
+ * This program fulfills the requirements for HW #7 AND Exam #4.   It finds both the fastest and shortest paths
+ * between airports and prints the information to the console.
+ */
+
 import java.util.*;
 
-public class HW_7 {
+public class HW_7_EXAM_4 {
 
     static HashMap<String, Vertex> map = new HashMap();
 
@@ -61,12 +66,26 @@ public class HW_7 {
         map.put("SFO", sfo);
         map.put("BRW", brw);
 
-        //Evaluate and print paths
+        //Evaluate and print paths to console
         pathPrinter(jfk, brw);
         pathPrinter(jfk, sfo);
         pathPrinter(ord, den);
         pathPrinter(lax, ord);
         pathPrinter(dfw, sfo);
+
+        //Print connected flight info to console
+        System.out.println("Connected flights:\n");
+
+        for (Vertex v : map.values()) {
+            Iterator neighorIterator = v.getNeighborIterator();
+
+            System.out.println("***" + v + "***");
+            while (neighorIterator.hasNext()) {
+                System.out.println(v + " is connected to " + neighorIterator.next());
+            }
+            System.out.println();
+
+        }
 
 
 

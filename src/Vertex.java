@@ -2,6 +2,9 @@
  * A class that represents a vertex in a graph.  This implementation is a modified form of
  * Frank Carrano's VertexInterface and Vertex class from the textbook.
  *
+ * @author Frank Carrano (modified by Nick Mancuso)
+ * @since 11/22/18
+ *
  */
 
 import java.util.Iterator;

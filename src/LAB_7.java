@@ -1,6 +1,11 @@
+/**
+ * This program creates, connects, and displays airport information
+ * @author Nick Mancuso
+ * @since 11/22/18
+ */
+
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 public class LAB_7 {
 
