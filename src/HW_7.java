@@ -3,7 +3,6 @@ import java.util.*;
 public class HW_7 {
 
     static HashMap<String, Vertex> map = new HashMap();
-    Stack<Vertex> path = new Stack<>();
 
     public static void main (String[] args) {
 
@@ -37,7 +36,7 @@ public class HW_7 {
         jfk.connect(atl,2);
         jfk.connect(lax,7);
         jfk.connect(ord,2);
-        //jfk.connect(sfo,7);
+        //jfk.connect(sfo,7);   commented this out for testing
 
         sfo.connect(lax,1);
         sfo.connect(den,3);
@@ -56,7 +55,9 @@ public class HW_7 {
 
         LinkedList<Vertex> path1 = new LinkedList<>();
 
-        int shortestPath = getShortestPath(jfk, sfo, path1);
+        int shortestPath = getShortestPath(jfk, brw, path1);
+
+        //TODO: Add logic to catch an airport that doesn't connect
 
         while(!path1.isEmpty()) {
             System.out.println(path1.pop());
@@ -68,7 +69,10 @@ public class HW_7 {
         System.out.println("Fastest Path: ");
         LinkedList<Vertex> path2 = new LinkedList<>();
 
-        int fastestPath = getFastestPath(jfk, sfo, path2);
+        int fastestPath = getFastestPath(jfk, brw, path2);
+
+        //TODO: Add logic to catch an airport that doesn't connect
+
 
         while(!path2.isEmpty()) {
             System.out.println(path2.pop());
@@ -84,7 +88,7 @@ public class HW_7 {
     }
 
 
-    static public int getFastestPath(Vertex source, Vertex destination, LinkedList<Vertex> path) {
+    static int getFastestPath(Vertex source, Vertex destination, LinkedList<Vertex> path) {
 
         //Reset visited status
         for(Vertex v: map.values()) {
@@ -142,7 +146,7 @@ public class HW_7 {
 
     }
 
-    public static int getShortestPath(Vertex source, Vertex destination, LinkedList<Vertex> path) {
+    static int getShortestPath(Vertex source, Vertex destination, LinkedList<Vertex> path) {
 
         //Reset visited status
         for(Vertex v: map.values()) {
