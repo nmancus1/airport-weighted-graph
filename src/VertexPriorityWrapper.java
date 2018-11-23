@@ -1,9 +1,15 @@
-public class VertexPriorityWrapper implements Comparable{
+/**
+ * This class wraps the vertex class so that it can be sorted by a priority queue, using compareTo
+ */
 
+public class VertexPriorityWrapper implements Comparable {
+
+    //Data fields
     Vertex vertex;
     double cost;
     Vertex previous;
 
+    //constructor
     public VertexPriorityWrapper(Vertex vertex, double cost, Vertex previous) {
         this.vertex = vertex;
         this.cost = cost;
@@ -11,6 +17,7 @@ public class VertexPriorityWrapper implements Comparable{
     }
 
 
+    //Accessors and Mutators
     public double getCost() {
         return cost;
     }
@@ -35,21 +42,31 @@ public class VertexPriorityWrapper implements Comparable{
         this.previous = previous;
     }
 
+    /**
+     * This method enables VertexPriorityWrappers to be sorted correctly in a priority queue
+     * @param o what we're comparing this VPW to
+     * @return int representing the relationship between the two VPWs
+     */
     @Override
     public int compareTo(Object o) {
 
+        //Make sure we're comparing VPW
         if (o instanceof VertexPriorityWrapper) {
 
-            VertexPriorityWrapper wrapper = (VertexPriorityWrapper)o;
+            //Readability
+            VertexPriorityWrapper wrapper = (VertexPriorityWrapper) o;
+
+            //If this VPW cost is greater than what we're comparing it to
             if (this.cost > wrapper.getCost()) {
                 return 1;
+
+                //If this VPW cost is less than what we're comparing it to
             } else if (this.cost < wrapper.getCost()) {
                 return -1;
             }
 
-            return 0;
         }
-
+        //If they're the same or what we're passing in isn't a VPW
         return 0;
     }
 }

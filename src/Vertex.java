@@ -1,21 +1,23 @@
+/**
+ * A class that represents a vertex in a graph.  This implementation is a modified form of
+ * Frank Carrano's VertexInterface and Vertex class from the textbook.
+ *
+ */
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-/**
- * A class that represents a vertex in a graph.
- *
- * @author Frank M. Carrano
- * @version 2.0
- */
+
 class Vertex<T> implements java.io.Serializable
 {
-    private T label;
-    private LinkedList<Edge> edgeList;                 // edges to neighbors
-    private boolean visited;                          // true if visited
-    private Vertex<T> previousVertex;        // on path to this vertex
-    private double cost;                              // of path to this vertex
+    private T label;                                    // type of data in vertex
+    private LinkedList<Edge> edgeList;                  // edges to neighbors
+    private boolean visited;                            // true if visited
+    private Vertex<T> previousVertex;                   // on path to this vertex
+    private double cost;                                // of path to this vertex
 
 
+    //Constructor
     public Vertex(T vertexLabel)
     {
         label = vertexLabel;
@@ -25,14 +27,23 @@ class Vertex<T> implements java.io.Serializable
         cost = 0;
     } // end constructor
 
+    /**
+     * Gets the data of this vertex
+     * @return T
+     */
     public T getLabel()
     {
         return label;
     } // end getLabel
 
-    public boolean connect(Vertex<T> endVertex,
-                           double edgeWeight)
-    {
+    /**
+     * This method connects vertices with an edge weight
+     * @param endVertex
+     * @param edgeWeight
+     * @return
+     */
+    public boolean connect(Vertex<T> endVertex, double edgeWeight) {
+
         boolean result = false;
 
         if (!this.equals(endVertex))
@@ -57,26 +68,28 @@ class Vertex<T> implements java.io.Serializable
         return result;
     } // end connect
 
-    public boolean connect(Vertex<T> endVertex)
-    {
-        return connect(endVertex, 0);
-    } // end connect
-
+    /**
+     * This method returns a neighbor iterator
+     * @return
+     */
     public Iterator<Vertex<T>> getNeighborIterator()
     {
         return new neighborIterator();
     } // end getNeighborIterator
 
+    /**
+     * This method returns a edge weight iterator
+     * @return
+     */
     public Iterator<Double> getWeightIterator()
     {
         return new weightIterator();
     } // end getWeightIterator
 
-    public boolean hasNeighbor()
-    {
-        return !edgeList.isEmpty();
-    } // end hasNeighbor
-
+    /**
+     * This method returns an unvisited neighbor
+     * @return
+     */
     public Vertex<T> getUnvisitedNeighbor()
     {
         Vertex<T> result = null;
@@ -92,46 +105,81 @@ class Vertex<T> implements java.io.Serializable
         return result;
     } // end getUnvisitedNeighbor
 
+    /**
+     * This method checks if this vertex has a previous vertex
+     * @return
+     */
     public boolean hasPredecessor()
     {
         return previousVertex != null;
     } // end hasPredecessor
 
+    /**
+     * This method sets a previous vertex for this vertex
+     * @param predecessor
+     */
     public void setPredecessor(Vertex<T> predecessor)
     {
         previousVertex = predecessor;
     } // end setPredecessor
 
+    /**
+     * This method returns the previous vertex
+     * @return
+     */
     public Vertex<T> getPredecessor()
     {
         return previousVertex;
     } // end getPredecessor
 
+    /**
+     * This method marks this vertex as visited for traversal
+     */
     public void visit()
     {
         visited = true;
     } // end visit
 
+    /**
+     * This method marks this vertex as not visited, for traversal
+     */
     public void unvisit()
     {
         visited = false;
     } // end unvisit
 
+    /**
+     * This method checks the visited status of this vertex
+     * @return
+     */
     public boolean isVisited()
     {
         return visited;
     } // end isVisited
 
+    /**
+     * This method gets the cost of visiting this vertex
+     * @return
+     */
     public double getCost()
     {
         return cost;
     } // end getCost
 
+    /**
+     * This method sets the cost of visiting this vertex
+     * @param newCost
+     */
     public void setCost(double newCost)
     {
         cost = newCost;
     } // end setCost
 
+    /**
+     * This method checks if two vertices are the same
+     * @param other other vertex to compare
+     * @return
+     */
     public boolean equals(Object other)
     {
         boolean result;
@@ -147,30 +195,22 @@ class Vertex<T> implements java.io.Serializable
         return result;
     } // end equals
 
+    /**
+     * This method returns the vertex data's toString method
+     * @return
+     */
     public String toString()
     {
         return label.toString();
     } // end toString
 
-    public void display() // for testing
-    {
-        System.out.print(label + " " );
-        Iterator<Vertex<T>> vertexIterator = getNeighborIterator();
-        Iterator<Double> weightIterator = getWeightIterator();
-
-        while (vertexIterator.hasNext())
-        {
-            Vertex<T> vert = (Vertex<T>)vertexIterator.next();
-            System.out.print(vert + " " + weightIterator.next() + " ");
-
-        } // end while
-        System.out.println();
-    } // end display
-
-    // 31.10
+    /**
+     * Inner class edge represents the paths between vertices
+     */
     public class Edge
     {
-        private Vertex<T> vertex; // end vertex
+        //Data fields
+        private Vertex<T> vertex;
         private double weight;
 
         protected Edge(Vertex<T> endVertex, double edgeWeight)
@@ -195,6 +235,10 @@ class Vertex<T> implements java.io.Serializable
         } // end toString
     } // end Edge
 
+    /**
+     * Inner class neighborIterator creates an iterator to traverse elements of this vertex's
+     * edge list and return vertex's neighbors
+     */
     private class neighborIterator implements Iterator<Vertex<T>>
     {
         private Iterator<Edge> edges;
@@ -230,6 +274,10 @@ class Vertex<T> implements java.io.Serializable
         } // end remove
     } // end neighborIterator
 
+    /**
+     * Inner class weightIterator creates an iterator to traverse the elements of this vertex's edge list
+     * and return the weights of the edges between neighbors
+     */
     private class weightIterator implements Iterator<Double>
     {
         private Iterator<Edge> edges;

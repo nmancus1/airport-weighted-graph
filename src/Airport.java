@@ -3,10 +3,12 @@
  */
 public class Airport {
 
+    //Data fields
     String name;
     private int layOver = 2;
 
 
+    //Accessors and Mutators
     public Airport() {
         name = null;
     }
