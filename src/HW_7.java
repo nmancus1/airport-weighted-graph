@@ -44,7 +44,7 @@ public class HW_7 {
         jfk.connect(atl,2);
         jfk.connect(lax,7);
         jfk.connect(ord,2);
-        //jfk.connect(sfo,7);   commented this out for testing
+        jfk.connect(sfo,7);
 
         //SFO
         sfo.connect(lax,1);
@@ -66,6 +66,7 @@ public class HW_7 {
         pathPrinter(jfk, sfo);
         pathPrinter(ord, den);
         pathPrinter(lax, ord);
+        pathPrinter(dfw, sfo);
 
 
 
@@ -112,7 +113,7 @@ public class HW_7 {
 
         /**FASTEST PATH**/
         //Display info
-        System.out.println("Fastest Path: ");
+        System.out.println("Fastest Path between " + source + " and " + destination + ":");
 
         //Evaluate fastest path
         int fastestPath = getFastestPath(source, destination, path2);
