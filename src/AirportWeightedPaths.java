@@ -3,13 +3,16 @@
  * between airports and prints the information to the console.
  */
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
 
-public class HW_7_EXAM_4 {
+public class AirportWeightedPaths {
 
-    static HashMap<String, Vertex> map = new HashMap();
+    static final HashMap<String, Vertex> map = new HashMap();
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
 
         //Create vertices, which contain airports
         Vertex<Airport> atl = new Vertex(new Airport("ATL"));
@@ -25,36 +28,36 @@ public class HW_7_EXAM_4 {
         /***Connect airports**/
 
         //ATL
-        atl.connect(dfw,2);
-        atl.connect(jfk,2);
+        atl.connect(dfw, 2);
+        atl.connect(jfk, 2);
 
         //LAX
-        lax.connect(dfw,3);
-        lax.connect(jfk,7);
-        lax.connect(sfo,1);
+        lax.connect(dfw, 3);
+        lax.connect(jfk, 7);
+        lax.connect(sfo, 1);
 
         //ORD
         ord.connect(den, 2);
-        ord.connect(jfk,2);
+        ord.connect(jfk, 2);
 
         //DFW
-        dfw.connect(atl,2);
-        dfw.connect(lax,3);
+        dfw.connect(atl, 2);
+        dfw.connect(lax, 3);
 
         //DEN
-        den.connect(ord,2);
-        den.connect(sfo,3);
+        den.connect(ord, 2);
+        den.connect(sfo, 3);
 
         //JFK
-        jfk.connect(atl,2);
-        jfk.connect(lax,7);
-        jfk.connect(ord,2);
-        jfk.connect(sfo,7);
+        jfk.connect(atl, 2);
+        jfk.connect(lax, 7);
+        jfk.connect(ord, 2);
+        jfk.connect(sfo, 7);
 
         //SFO
-        sfo.connect(lax,1);
-        sfo.connect(den,3);
-        sfo.connect(jfk,7);
+        sfo.connect(lax, 1);
+        sfo.connect(den, 3);
+        sfo.connect(jfk, 7);
 
         //Add to hashmap
         map.put("ATL", atl);
@@ -76,24 +79,14 @@ public class HW_7_EXAM_4 {
         //Print connected flight info to console
         System.out.println("Connected flights:\n");
 
-        for (Vertex v : map.values()) {
-            Iterator neighorIterator = v.getNeighborIterator();
+        map.forEach(AirportWeightedPaths::printNeighbors);
 
-            System.out.println("***" + v + "***");
-            while (neighorIterator.hasNext()) {
-                System.out.println(v + " is connected to " + neighorIterator.next());
-            }
-            System.out.println();
-
-        }
-
-
-
-            }
+    }
 
     /**
      * This method calls both path methods and displays the relevant data
-     * @param source the source vertex
+     *
+     * @param source      the source vertex
      * @param destination the destination vertex
      */
     static void pathPrinter(Vertex source, Vertex destination) {
@@ -111,22 +104,14 @@ public class HW_7_EXAM_4 {
 
         //Print results of getShortestPath()
         if (shortestPath < 1) {                 //if airport isn't connected
-            System.out.println("There is no path between " + source + " and " + destination + ".");
-            System.out.println();
+            System.out.println("There is no path between " + source + " and " + destination + ".\n");
+
         } else {                                //print path
-            while (!path1.isEmpty()) {
 
-                Vertex vertex = path1.pop();
-                System.out.print(vertex);
-                if (vertex != destination) {
-                    System.out.print(" > ");
-                }
-
-            }
+            path1.forEach(v -> printSinglePath(v, destination));
 
             //Print length(weight) of path
-            System.out.println();
-            System.out.println("Total length of path: " + shortestPath);
+            System.out.println("\nTotal length of path: " + shortestPath);
             System.out.println();
         }
 
@@ -139,39 +124,32 @@ public class HW_7_EXAM_4 {
 
         //Print results
         if (fastestPath < 1) {              //if airport isn't connected
-            System.out.println("There is no path between " + source + " and " + destination + ".");
-            System.out.println();
-        } else {                            //print path
-            while (!path2.isEmpty()) {
 
-                Vertex vertex = path2.pop();
-                System.out.print(vertex);
-                if (vertex != destination) {
-                    System.out.print(" > ");
-                }
-            }
+            System.out.println("There is no path between " + source + " and " + destination + ".\n");
+
+        } else {                            //print path
+
+            path2.forEach(v -> printSinglePath(v, destination));
 
             //Print time(cost) of path
-            System.out.println();
-            System.out.println("Total time of path: " + fastestPath + ".");
-            System.out.println();
-
-
+            System.out.println("\nTotal time of path: " + fastestPath + ".\n");
         }
     }
+
 
     /**
      * This method finds the fastest path from one vertex to another.  This implementation
      * borrows from Frank Carrano's getCheapestPath() method.
-     * @param source the source vertex
+     *
+     * @param source      the source vertex
      * @param destination the destination vertex
-     * @param path linked list to hold vertices
+     * @param path        linked list to hold vertices
      * @return integer that represents the number of hours of complete travel time
      */
     static int getFastestPath(Vertex source, Vertex destination, LinkedList<Vertex> path) {
 
         //Reset visited status
-        for(Vertex v: map.values()) {
+        for (Vertex v : map.values()) {
             v.unvisit();
         }
 
@@ -187,7 +165,7 @@ public class HW_7_EXAM_4 {
         queue.add(source);
 
         //Keep going until done is true and queue is empty
-        while(!done && !queue.isEmpty()){
+        while (!done && !queue.isEmpty()) {
 
             //Get first element of queue
             Vertex front = queue.pollFirst();
@@ -197,14 +175,14 @@ public class HW_7_EXAM_4 {
             Iterator neighborWeight = front.getWeightIterator();
 
             //Keep going until done and while iterators still have more elements
-            while(!done && neighbors.hasNext() && neighborWeight.hasNext()){
+            while (!done && neighbors.hasNext() && neighborWeight.hasNext()) {
 
                 //Set neighbor and neighbor weight
                 Vertex nextNeighbor = (Vertex) neighbors.next();
-                double weight = (double)neighborWeight.next();
+                double weight = (double) neighborWeight.next();
 
                 //Check if this neighbor has been visited
-                if(!nextNeighbor.isVisited()) {
+                if (!nextNeighbor.isVisited()) {
                     nextNeighbor.visit();                           //set to visited
                     nextNeighbor.setPredecessor(front);             //set previous vertex
                     Airport airport = (Airport) nextNeighbor.getLabel();        //get airport for evaluating layover
@@ -217,7 +195,7 @@ public class HW_7_EXAM_4 {
                 }
 
                 //Check if we're done(found our destination)
-                if(nextNeighbor.equals(destination)) {
+                if (nextNeighbor.equals(destination)) {
                     done = true;
                 }
             }
@@ -225,7 +203,7 @@ public class HW_7_EXAM_4 {
 
         //Do some math on path length to account for no layover at destination
         Airport airport = (Airport) destination.getLabel();
-        int pathLength = (int)destination.getCost() - airport.getLayover();
+        int pathLength = (int) destination.getCost() - airport.getLayover();
 
         //Add destination to path
         path.push(destination);
@@ -247,15 +225,16 @@ public class HW_7_EXAM_4 {
     /**
      * This method finds the fastest path from one vertex to another.  This implementation
      * borrows from Frank Carrano's getShortestPath() method.
-     * @param source the source vertex
+     *
+     * @param source      the source vertex
      * @param destination the destination vertex
-     * @param path linked list to hold vertices
+     * @param path        linked list to hold vertices
      * @return integer that represents the length of the trip
      */
     static int getShortestPath(Vertex source, Vertex destination, LinkedList<Vertex> path) {
 
         //Reset visited status
-        for(Vertex v: map.values()) {
+        for (Vertex v : map.values()) {
             v.unvisit();
         }
 
@@ -265,34 +244,34 @@ public class HW_7_EXAM_4 {
         PriorityQueue<VertexPriorityWrapper> queue = new PriorityQueue<>();
 
         //Add wrapped vertex to queue with no cost and no previous vertex
-        queue.add(new VertexPriorityWrapper(source,0, null));
+        queue.add(new VertexPriorityWrapper(source, 0, null));
 
         //Keep going until done or queue is empty
-        while(!done && !queue.isEmpty()) {
+        while (!done && !queue.isEmpty()) {
 
             //Create wrapped vertex
             VertexPriorityWrapper frontWrapper = queue.remove();
             Vertex front = frontWrapper.getVertex();
 
             //Check if this vertex has been visited
-            if(!front.isVisited()) {
+            if (!front.isVisited()) {
                 front.visit();                          //set to visited
                 front.setCost(frontWrapper.getCost());  //set cost from wrapper to vertex
                 front.setPredecessor(frontWrapper.getPrevious());       //set previous from wrapper to vertex
 
                 //If front is destination, we're done
-                if(front.equals(destination)) {
+                if (front.equals(destination)) {
                     done = true;
 
                     //If not, start adding neighbors to queue
-                }else {
+                } else {
 
                     //Set up iterators
                     Iterator<Double> edgeWeights = front.getWeightIterator();
                     Iterator<Vertex> neighbors = front.getNeighborIterator();
 
                     //While iterators still have elements
-                    while(neighbors.hasNext() && edgeWeights.hasNext()) {
+                    while (neighbors.hasNext() && edgeWeights.hasNext()) {
 
                         //Get next neighboring vertex and get weight
                         Vertex nextNeighbor = neighbors.next();
@@ -305,7 +284,7 @@ public class HW_7_EXAM_4 {
                             double nextCost = weightOfEdge + front.getCost();
 
                             //Add wrapped vertex to queue, with appropriate weight and correct previous vertex
-                            queue.add(new VertexPriorityWrapper(nextNeighbor,nextCost,front));
+                            queue.add(new VertexPriorityWrapper(nextNeighbor, nextCost, front));
                         }
 
                     }
@@ -314,14 +293,14 @@ public class HW_7_EXAM_4 {
         }
 
         //Set path cost
-        int pathCost = (int)destination.getCost();
+        int pathCost = (int) destination.getCost();
         path.push(destination);
 
         //Readability
         Vertex vertex = destination;
 
         //Push all vertices on shortest path to linked list
-        while(vertex.hasPredecessor()) {
+        while (vertex.hasPredecessor()) {
             vertex = vertex.getPredecessor();
             path.push(vertex);
         }
@@ -331,4 +310,23 @@ public class HW_7_EXAM_4 {
     }
 
 
+    private static void printNeighbors(String k, Vertex v) {
+        Iterator neighborIterator = v.getNeighborIterator();
+
+        System.out.println("***" + v + "***");
+
+        neighborIterator.forEachRemaining(e ->
+                System.out.println(v + " is connected to " + e));
+
+        System.out.println();
+    }
+
+    private static void printSinglePath(Vertex v, Vertex d) {
+
+        System.out.print(v);
+        if (v != d) {
+            System.out.print(" > ");
+        }
+
+    }
 }
