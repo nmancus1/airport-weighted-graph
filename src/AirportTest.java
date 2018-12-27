@@ -7,7 +7,7 @@
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class LAB_7 {
+public class AirportTest {
 
     public static void main(String[] args) {
 
